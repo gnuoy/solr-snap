@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+export SOLR_JAVA_HOME="$SNAP/usr/lib/jvm/java-8-openjdk-amd64/jre"
+export PATH="$PATH:$JAVA_HOME"
+
+mkdir -p $SNAP_COMMON/{pids,logs,data}
+test -f $SNAP_COMMON/solr.xml || cp $SNAP/server/solr/solr.xml $SNAP_COMMON
+test -f $SNAP_COMMON/log4j.properties || sed -e "s!^solr.log.*!solr.log=${SNAP_COMMON}/logs!" \
+                                         $SNAP/server/resources/log4j.properties > $SNAP_COMMON/log4j.properties
+test -f $SNAP_COMMON/solr.in.sh || sed -e "/SOLR_PID_DIR/c\SOLR_PID_DIR=${SNAP_COMMON}/pids" \
+                                       -e "/SOLR_HOME/c\SOLR_HOME=${SNAP_COMMON}" \
+                                       -e "/SOLR_LOGS_DIR/c\SOLR_LOGS_DIR=${SNAP_COMMON}/logs" \
+                                       -e "/LOG4J_PROPS/c\LOG4J_PROPS=${SNAP_COMMON}/log4j.properties" \
+                                       $SNAP/bin/solr.in.sh > ${SNAP_COMMON}/solr.in.sh
+
+SOLR_INCLUDE=${SNAP_COMMON}/solr.in.sh $SNAP/bin/solr start -noprompt -f
