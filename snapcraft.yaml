@@ -1,14 +1,15 @@
 name: apache-solr
-version: 13  # the version of the snap
+version: 1
 summary: Solr Search Platform
-description: Solr is the popular, open source enterprise search platform built on Apache Lucene™.
-confinement: devmode  # use "strict" to enforce system access only via declared interfaces
+description: Solr is the popular, open source enterprise search platform built on Apache Lucene
+confinement: strict
 architectures: [all]
 
 apps:
     solr:                                                               
         command: bin/run-solr
         daemon: simple                                                              
+        plugs: [network-bind]
 parts:
     solr:
         plugin: dump
