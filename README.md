@@ -9,6 +9,14 @@ indexing, replication and load-balanced querying, automated failover and
 recovery, centralized configuration and more. Solr powers the search and
 navigation features of many of the world's largest internet sites.
 
+## Install
+
+Snap is currently in the beta channel
+
+```
+sudo snap install apache-solr --channel=beta
+```
+
 ## Configuring
 
 Solr configuration files, logs and data can be found in
@@ -18,6 +26,7 @@ Solr configuration files, logs and data can be found in
 ```
 
 ## Testing
+
 
 ```
 JRE_HOME="/snap/apache-solr/current/usr/lib/jvm/java-8-openjdk-amd64/jre"
@@ -29,3 +38,5 @@ sudo SOLR_JAVA_HOME="${JRE_HOME}" ${SOLR_BIN}/solr create -c ${CORE_NAME}
 sudo SOLR_JAVA_HOME="${JRE_HOME}" ${SOLR_BIN}/post -c ${CORE_NAME} ${TEST_FILE}
 curl "http://$(hostname -I):8983/solr/${CORE_NAME}/select?q=Black"
 ```
+
+NOTE: unzip must be installed on the server outside of the snap to run the test.
