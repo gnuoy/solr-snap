@@ -1,9 +1,9 @@
 name: apache-solr
-version: 1
+version: 1.1 # the version of the snap
 summary: Solr Search Platform
-description: Solr is the popular, open source enterprise search platform built on Apache Lucene
-confinement: strict
-architectures: [all]
+description: Solr is the popular, open source enterprise search platform built on Apache Lucene™.
+confinement: strict  # use "strict" to enforce system access only via declared interfaces
+architectures: [amd64]
 
 apps:
     solr:                                                               
@@ -11,6 +11,9 @@ apps:
         daemon: simple                                                              
         plugs: [network-bind]
 parts:
+    solrjdk:
+        plugin: jdk
+        source: .
     solr:
         plugin: dump
         source: http://archive.apache.org/dist/lucene/solr/5.3.2/solr-5.3.2.tgz
@@ -18,7 +21,6 @@ parts:
         plugin: copy
         stage-packages:
             - unzip
-            - openjdk-8-jre
             - lsof
         files:
             bin/run-solr: bin/run-solr
